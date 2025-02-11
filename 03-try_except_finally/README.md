@@ -26,11 +26,11 @@
    - [Example](#example-5)
 
 7. **[Best Practices for Exception Handling](#7-best-practices-for-exception-handling)**
-   - [Be Specific with Exceptions](#be-specific-with-exceptions)
-   - [Avoid Silent Failures](#avoid-silent-failures)
-   - [Use `finally` for Cleanup](#use-finally-for-cleanup)
-   - [Don't Overuse Exceptions](#dont-overuse-exceptions)
-   - [Log Exceptions](#log-exceptions)
+   - Be Specific with Exceptions
+   - Avoid Silent Failures
+   - Use `finally` for Cleanup
+   - Don't Overuse Exceptions
+   - Log Exceptions
 
 8. **[Complete Example](#8-complete-example)**
 
