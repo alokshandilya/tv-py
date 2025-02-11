@@ -601,3 +601,201 @@ Tuples are immutable, so they have fewer methods compared to lists, sets, and di
    index = my_tuple.index(2, 2)
    print(index)  # Output: 3
    ```
+
+
+
+# List Comprehension
+
+**List comprehensions** and **dictionary comprehensions** are concise and powerful ways to create lists and dictionaries in Python. They allow you to generate new collections by applying an expression to each item in an iterable, optionally filtering items based on a condition.
+
+Both list and dictionary comprehensions are widely used because they make the code more readable and often faster than using traditional loops.
+
+### **Syntax:**
+```python
+[expression for item in iterable if condition]
+```
+
+- **`expression`**: The operation or value to be included in the resulting list.
+- **`item`**: The variable representing each element in the iterable.
+- **`iterable`**: The collection (e.g., list, tuple, range) over which you iterate.
+- **`if condition`**: (Optional) A filter that determines whether the `item` should be included in the result.
+
+### **Examples:**
+
+#### **Basic Example:**
+Create a list of squares of numbers from 0 to 9:
+```python
+squares = [x**2 for x in range(10)]
+print(squares)  # Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+
+#### **With a Condition:**
+Create a list of even numbers from 0 to 9:
+```python
+evens = [x for x in range(10) if x % 2 == 0]
+print(evens)  # Output: [0, 2, 4, 6, 8]
+```
+
+#### **Nested Loops:**
+Flatten a 2D list into a single list:
+```python
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = [num for row in matrix for num in row]
+print(flattened)  # Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+#### **Multiple Conditions:**
+Create a list of numbers divisible by both 2 and 3:
+```python
+nums = [x for x in range(20) if x % 2 == 0 if x % 3 == 0]
+print(nums)  # Output: [0, 6, 12, 18]
+```
+
+#### **Transforming Data:**
+Convert a list of strings to uppercase:
+```python
+words = ['hello', 'world', 'python']
+upper_words = [word.upper() for word in words]
+print(upper_words)  # Output: ['HELLO', 'WORLD', 'PYTHON']
+```
+
+
+## Dictionary Comprehension
+
+### **Syntax:**
+
+```python
+{key_expression: value_expression for item in iterable if condition}
+```
+
+- **`key_expression`**: The expression that generates the key for each item.
+- **`value_expression`**: The expression that generates the value for each item.
+- **`item`**: The variable representing each element in the iterable.
+- **`iterable`**: The collection (e.g., list, tuple, range) over which you iterate.
+- **`if condition`**: (Optional) A filter that determines whether the `item` should be included in the result.
+
+### **Examples:**
+
+#### **Basic Example:**
+Create a dictionary where keys are numbers and values are their squares:
+```python
+squares_dict = {x: x**2 for x in range(5)}
+print(squares_dict)  # Output: {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+```
+
+#### **With a Condition:**
+Create a dictionary of even numbers as keys and their cubes as values:
+```python
+even_cubes = {x: x**3 for x in range(10) if x % 2 == 0}
+print(even_cubes)  # Output: {0: 0, 2: 8, 4: 64, 6: 216, 8: 512}
+```
+
+#### **Transforming Keys and Values:**
+Create a dictionary from a list of tuples, swapping keys and values:
+```python
+pairs = [('a', 1), ('b', 2), ('c', 3)]
+swapped_dict = {value: key for key, value in pairs}
+print(swapped_dict)  # Output: {1: 'a', 2: 'b', 3: 'c'}
+```
+
+#### **Filtering Based on Values:**
+Create a dictionary with only values greater than 10:
+```python
+data = {'a': 5, 'b': 15, 'c': 20, 'd': 8}
+filtered_dict = {k: v for k, v in data.items() if v > 10}
+print(filtered_dict)  # Output: {'b': 15, 'c': 20}
+```
+
+#### **Nested Dictionary Comprehension:**
+Create a nested dictionary from a list of keys:
+```python
+keys = ['a', 'b', 'c']
+nested_dict = {key: {i: i**2 for i in range(3)} for key in keys}
+print(nested_dict)
+# Output: {'a': {0: 0, 1: 1, 2: 4}, 'b': {0: 0, 1: 1, 2: 4}, 'c': {0: 0, 1: 1, 2: 4}}
+```
+
+# Set Comprehension
+
+Set comprehensions are similar to list comprehensions but return a set instead of a list. Sets automatically remove duplicates.
+
+### **Syntax:**
+
+```python
+{expression for item in iterable if condition}
+```
+
+### **Examples:**
+
+#### **Basic Example:**
+Create a set of squares of numbers from 0 to 9:
+
+```python
+squares_set = {x**2 for x in range(10)}
+print(squares_set)  # Output: {0, 1, 4, 9, 16, 25, 36, 49, 64, 81}
+```
+
+#### **With a Condition:**
+
+Create a set of unique even numbers from a list:
+
+```python
+numbers = [1, 2, 2, 3, 4, 4, 5, 6]
+unique_evens = {x for x in numbers if x % 2 == 0}
+print(unique_evens)  # Output: {2, 4, 6}
+```
+
+# Generator Expressions
+
+Generator expressions are similar to list comprehensions but use parentheses `()` instead of square brackets `[]`. They generate items one at a time, making them memory-efficient for large datasets.
+
+### **Syntax:**
+```python
+(expression for item in iterable if condition)
+```
+
+### **Example:**
+Generate squares of numbers lazily:
+```python
+squares_gen = (x**2 for x in range(10))
+for square in squares_gen:
+    print(square)
+# Output: 0, 1, 4, 9, 16, 25, 36, 49, 64, 81
+```
+
+## Nested Comprehensions
+
+You can nest comprehensions to handle more complex scenarios, such as creating multidimensional structures.
+
+### **Example:**
+
+Create a 2D list (matrix) using nested list comprehension:
+
+```python
+matrix = [[i + j for j in range(3)] for i in range(3)]
+print(matrix)
+# Output: [[0, 1, 2], [1, 2, 3], [2, 3, 4]]
+```
+
+### **Example:**
+
+Create a dictionary of lists using nested dictionary comprehension:
+```python
+nested_dict = {outer: [inner for inner in range(3)] for outer in range(3)}
+print(nested_dict)
+# Output: {0: [0, 1, 2], 1: [0, 1, 2], 2: [0, 1, 2]}
+```
+
+## **6. Performance Considerations**
+
+- **List Comprehensions vs Loops**: List comprehensions are generally faster than equivalent `for` loops because they are optimized in C under the hood.
+- **Memory Efficiency**: Generator expressions (`()`) are more memory-efficient than list comprehensions (`[]`) when working with large datasets, as they generate items lazily.
+- **Readability**: Comprehensions can make code more concise and readable, but overly complex comprehensions can reduce readability. Use them judiciously.
+
+
+> ## Note
+>
+> **List comprehensions** are ideal for generating lists in a concise manner, especially when combined with conditions and transformations.  
+> **Dictionary comprehensions** allow you to create dictionaries with minimal code, making it easy to map keys to values dynamically.  
+> **Set comprehensions** are useful for creating sets with unique elements, automatically removing duplicates.  
+> **Generator expressions** provide a memory-efficient way to handle large datasets by generating items lazily.
