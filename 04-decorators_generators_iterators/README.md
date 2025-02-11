@@ -291,7 +291,11 @@ gen = simple_generator()
 print(next(gen))  # Output: 1
 print(next(gen))  # Output: 2
 print(next(gen))  # Output: 3
+print(next(gen))  # Raises StopIteration
 ```
+
+> **Note:** Calling `next()` on a generator advances its execution to the next `yield` statement.
+> - Once all values are exhausted, a `StopIteration` exception is raised.
 
 #### Example: A Generator Expression
 
