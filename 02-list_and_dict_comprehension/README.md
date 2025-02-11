@@ -571,3 +571,33 @@ print(reversed_list)  # Output: [5, 4, 3, 2, 1]
     print(new_dict)  # Output: {'a': 0, 'b': 0, 'c': 0}
     ```
 
+
+# Some important Tuple Methods
+
+Tuples are immutable, so they have fewer methods compared to lists, sets, and dictionaries. However, there are still a few useful methods:
+
+1. **`count(x)`**
+
+   - **Description**: Returns the number of times `x` appears in the tuple.
+   - **Time Complexity**: O(n), where `n` is the length of the tuple.
+
+   ```python
+   my_tuple = (1, 2, 3, 2, 4, 2)
+   count = my_tuple.count(2)
+   print(count)  # Output: 3
+   ```
+
+2. **`index(x[, start[, end]])`**
+
+   - **Description**: Returns the index of the first occurrence of `x`. You can specify optional `start` and `end` parameters to limit the search range. Raises a `ValueError` if the element is not found.
+   - **Time Complexity**: O(n), where `n` is the length of the tuple.
+
+   ```python
+   my_tuple = (1, 2, 3, 2, 4)
+   index = my_tuple.index(2)
+   print(index)  # Output: 1
+
+   # Search within a specific range
+   index = my_tuple.index(2, 2)
+   print(index)  # Output: 3
+   ```
