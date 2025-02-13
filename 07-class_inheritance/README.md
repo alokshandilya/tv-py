@@ -471,6 +471,82 @@ print(D.mro())
 # Output: [<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>]
 ```
 
+### Diamond Problem
+
+> The "diamond problem" is a classic issue in object-oriented programming that arises when a class inherits from two classes that have a common ancestor. The problem occurs when the derived class tries to call a method that's defined in the common ancestor, and it's ambiguous which version of the method should be called. Python, like many other languages, has mechanisms to handle this.
+
+Here's a breakdown of the diamond problem and how Python resolves it:
+
+**The Diamond Problem Illustrated**
+
+```
+     A
+    / \
+   B   C
+    \ /
+     D
+```
+
+In this diagram:
+
+- `A` is the base class.
+- `B` and `C` both inherit from `A`.
+- `D` inherits from both `B` and `C`.
+
+If `A` defines a method `foo()`, and `B` and `C` do _not_ override it, what happens when `D` calls `foo()`? Should it call `A`'s version directly? What if `B` _or_ `C` _did_ override `foo()`? This is the core of the diamond problem.
+
+**Python's Solution: Method Resolution Order (MRO)**
+
+Python uses a mechanism called Method Resolution Order (MRO) to determine the order in which methods are searched for in a class hierarchy. The MRO is a deterministic algorithm that ensures a consistent and predictable way to resolve method calls in complex inheritance scenarios, including the diamond problem.
+
+**How MRO Works (Simplified)**
+
+1. **Depth-First, Left-to-Right:** Python searches the inheritance hierarchy in a depth-first, left-to-right manner. In the diamond example, the search order would generally be: `D`, `B`, `A`, `C`, `A`.
+
+2. **`super()` and Cooperative Inheritance:** Python's `super()` function, when used correctly, plays a key role in making MRO work smoothly. `super()` doesn't just call the parent class's method; it calls the _next method in the MRO_. This enables cooperative inheritance, where classes can collaborate in a predictable way.
+
+3. **C3 Linearization Algorithm:** Python's MRO algorithm is based on the C3 linearization algorithm. This algorithm ensures that the MRO is consistent (preserves the local ordering of classes) and monotonic (if a class `X` precedes a class `Y` in the MRO of class `Z`, then `X` should also precede `Y` in the MRO of any class derived from `Z`).
+
+**Example in Python**
+
+```python
+class A:
+    def foo(self):
+        print("A's foo")
+
+class B(A):
+    def foo(self):
+        print("B's foo")  # B overrides foo
+
+class C(A):
+    pass  # C does not override foo
+
+class D(B, C):
+    pass  # D does not override foo
+
+d = D()
+d.foo()  # Output: B's foo
+print(D.mro()) # Output: [<class '__main__.D'>, <class '__main__.B'>, <class '__main__.A'>, <class '__main__.C'>, <class 'object'>]
+
+```
+
+**Explanation:**
+
+1. `D` inherits from `B` and `C`.
+2. `B` overrides `foo()`.
+3. `C` does _not_ override `foo()`.
+4. When `d.foo()` is called, Python's MRO comes into play.
+5. The MRO for `D` is `D`, `B`, `A`, `C`, `A`.
+6. The search starts in `D`. `D` doesn't have `foo()`.
+7. The search continues in `B`. `B` _does_ have `foo()`.
+8. `B`'s `foo()` is executed. The search stops there.
+
+**Key Takeaways**
+
+- Python's MRO (using the C3 algorithm) resolves the diamond problem.
+- `super()` enables cooperative inheritance and works seamlessly with MRO.
+- Understanding MRO is crucial for working with complex class hierarchies in Python. The `cls.__mro__` attribute or `inspect.getmro(cls)` function will show you the method resolution order for a class.
+
 ## 4. Private Methods
 
 ### What Are Private Methods?
