@@ -123,12 +123,19 @@ print(my_list[3][1])  # Output: 3
 - **Shallow vs Deep Copy**: When copying lists, you need to understand the difference between shallow and deep copies.
 
   - **Shallow Copy**: Copies reference to nested objects (e.g., `list.copy()` or slicing `[:]`).
+
+    > A shallow copy creates a new object, but it doesn't create copies of the inner objects. Instead, it references the original inner objects. Think of it like a photocopy of a document – the photocopy is a new piece of paper, but the words on it are still the same as the original.
+
   - **Deep Copy**: Creates completely independent copy of the list and its contents (use `copy.deepcopy()` from the `copy` module).
+
+    > f you wanted to modify the inner list and have the change reflected in both original and shallow_copy (or if you didn't want changes in one to affect the other), you would need a deep copy. A deep copy recursively creates copies of all inner objects. You can do this using the copy.deepcopy() function
 
 ```python
 import copy
 
 original = [[1, 2], [3, 4]]
+# original:List[List[Union[int, str]]] = [[1, 2], [3, 4]]  # type hint
+
 shallow_copy = original.copy()
 deep_copy = copy.deepcopy(original)
 
