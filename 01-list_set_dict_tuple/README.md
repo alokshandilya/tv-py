@@ -347,6 +347,15 @@ print(my_tuple[1])  # Output: apple
   p = Point(10, 20)
   print(p.x)  # Output: 10
   print(p.y)  # Output: 20
+  print(p)  # Output: Point(x=10, y=20)
+  print(type(p))  # Output: <class '__main__.Point'>
+
+  # normal tuple
+  p = (10, 20)
+  print(p[0]) # Output: 10
+  print(p[1]) # Output: 20
+  print(p) # Output: (10, 20)
+  print(type(p)) # Output: <class 'tuple'>
   ```
 
 - **Packing and Unpacking**: Tuples can be unpacked into variables, which is useful for returning multiple values from a function.
@@ -432,32 +441,32 @@ Certainly! Beyond the basic characteristics and operations of Python's **List**,
 
 - You can create custom data structures by subclassing built-in types or using classes. For example, you can create a custom dictionary that automatically handles missing keys.
 
-```python
-class AutoDict(dict):
-   def __init__(self, default_value):
-        super().__init__()  # Initialize as a normal dictionary
-        self.default_value = default_value  # Store the default value
+  ```python
+  class AutoDict(dict):
+     def __init__(self, default_value):
+          super().__init__()  # Initialize as a normal dictionary
+          self.default_value = default_value  # Store the default value
 
-    def __missing__(self, key):
-        self[key] = self.default_value  # Store default value for missing key
-        return self.default_value  # Return default value when key is missing
+      def __missing__(self, key):
+          self[key] = self.default_value  # Store default value for missing key
+          return self.default_value  # Return default value when key is missing
 
 
-# Create an AutoDict with a default value of "Unknown"
-my_dict = AutoDict("Unknown")
+  # Create an AutoDict with a default value of "Unknown"
+  my_dict = AutoDict("Unknown")
 
-# Add some key-value pairs
-my_dict["name"] = "Alice"
-my_dict["age"] = 25
+  # Add some key-value pairs
+  my_dict["name"] = "Alice"
+  my_dict["age"] = 25
 
-# Access existing keys
-print(my_dict["name"])  # Output: Alice
-print(my_dict["age"])  # Output: 25
+  # Access existing keys
+  print(my_dict["name"])  # Output: Alice
+  print(my_dict["age"])  # Output: 25
 
-# Access a missing key
-print(my_dict["city"])  # Output: Unknown
-print(my_dict)  # Output: {'name': 'Alice', 'age': 25, 'city': 'Unknown'}
-```
+  # Access a missing key
+  print(my_dict["city"])  # Output: Unknown
+  print(my_dict)  # Output: {'name': 'Alice', 'age': 25, 'city': 'Unknown'}
+  ```
 
 ## Advanced Concepts (Lists)
 
@@ -556,8 +565,6 @@ print(my_dict)  # Output: {'name': 'Alice', 'age': 25, 'city': 'Unknown'}
   ```
 
 - **Efficient Set Operations with Large Data**: For very large sets, consider using **bloom filters** (via libraries like `pybloom`) to efficiently check for membership without storing all elements in memory.
-
----
 
 ## Advanced Concepts (Dict)
 
