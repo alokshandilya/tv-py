@@ -38,8 +38,8 @@
 
 | **Pattern Type**        | **Pattern Name** | **Status** |
 | ----------------------- | ---------------- | :--------: |
-| **Creational Patterns** | Singleton        |     ⬜     |
-|                         | Factory          |     ⬜     |
-|                         | Builder          |     ⬜     |
-|                         | Abstract Factory |     ⬜     |
-| **Behavioral Patterns** | Strategy         |     ⬜     |
+| **Creational Patterns** | Singleton        |     ✅     |
+|                         | Factory          |     ✅     |
+|                         | Builder          |     ✅     |
+|                         | Abstract Factory |     ✅     |
+| **Behavioral Patterns** | Strategy         |     ✅     |
