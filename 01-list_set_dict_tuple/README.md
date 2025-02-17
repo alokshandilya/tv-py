@@ -124,7 +124,7 @@ print(my_list[3][1])  # Output: 3
 
   - **Shallow Copy**: Copies reference to nested objects (e.g., `list.copy()` or slicing `[:]`).
 
-    > A shallow copy creates a new object, but it doesn't create copies of the inner objects. Instead, it references the original inner objects. Think of it like a photocopy of a document – the photocopy is a new piece of paper, but the words on it are still the same as the original.
+    > A shallow copy creates a new object (use `copy.copy()` from the `copy` module), but it doesn't create copies of the inner objects. Instead, it references the original inner objects. Think of it like a photocopy of a document – the photocopy is a new piece of paper, but the words on it are still the same as the original.
 
   - **Deep Copy**: Creates completely independent copy of the list and its contents (use `copy.deepcopy()` from the `copy` module).
 

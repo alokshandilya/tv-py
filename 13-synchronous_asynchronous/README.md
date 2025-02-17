@@ -113,6 +113,9 @@ Total time: 3.00 seconds
 ### Disadvantages
 
 1. **Complexity:** Harder to write and debug due to concurrency and potential race conditions.
+
+   > A **_race condition_** occurs when _multiple threads or processes access shared resources concurrently, and the final outcome depends on the timing or order of execution_. This can lead to unpredictable and incorrect behavior. To prevent race conditions, you can use synchronization mechanisms like locks , semaphores , or condition variables to ensure that only one thread or coroutine can access the shared resource at a time.
+
 2. **Overhead:** Managing coroutines and the event loop introduces some overhead.
 3. **Limited Use Cases:** Not all tasks benefit from asynchrony (e.g., CPU-bound tasks).
 
@@ -127,8 +130,6 @@ Total time: 3.00 seconds
 | **Use Cases**         | Simple scripts, single-threaded apps | Web servers, real-time apps, I/O-heavy tasks |
 | **Performance**       | Slower for I/O-heavy tasks           | Faster for I/O-heavy tasks                   |
 
----
-
 ## 4. How Asynchronous Programming Works in Python
 
 Python provides several tools for asynchronous programming:
@@ -136,6 +137,9 @@ Python provides several tools for asynchronous programming:
 ### a. `async` and `await`
 
 - `async def`: Defines a coroutine.
+
+  > A **coroutine** is a special kind of function in Python that _can be paused and resumed during its execution_, allowing other code to run in the meantime.
+
 - `await`: Pauses execution of a coroutine until the awaited task completes.
 
 #### Example
