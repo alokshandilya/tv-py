@@ -481,3 +481,58 @@ io_thread.join()
 - **Overhead:** `threading` has the lowest overhead, followed by `asyncio`, with `multiprocessing` having the highest overhead due to process creation.
 
 Choosing the right approach depends heavily on the specific needs of your program. If you're unsure, start by profiling your code to identify the bottlenecks. If the bottlenecks are I/O-bound, `threading` or `asyncio` (depending on the scale) are good choices. If they're CPU-bound, `multiprocessing` is the way to go.
+
+> - **if IO bound problem:**
+>   - use `asyncio` if your library supports it, else use `threading`.
+> - **if CPU bound problem:**
+>   - use `multiprocessing`.
+> - **else**
+>   - you are probably fine with synchronous code.
+>   - you may still want to use async to have the feeling of responsiveness in case your code interacts with a user.
+
+**1. I/O-Bound Problems:**
+
+- **Use `asyncio` if your library supports it:** `asyncio` is the most efficient approach for I/O-bound tasks _when the libraries you're using are designed to work with `asyncio`_. This means they use asynchronous operations and don't block the event loop. Examples of libraries that often have good `asyncio` support include:
+
+  - `aiohttp` (for making HTTP requests)
+  - `asyncpg` (for PostgreSQL database interactions)
+  - Libraries for working with websockets
+
+- **Else, use `threading`:** If the libraries you're using are _not_ `asyncio`-aware (which is still very common), then `threading` is the better choice for I/O-bound tasks. While the GIL prevents true parallelism for CPU-bound work in threads, it _does_ allow concurrency for I/O. When one thread is waiting for I/O, the GIL can be released, and other threads can run.
+
+**Example of I/O-bound tasks:**
+
+- **Making multiple web requests:** Downloading data from several websites concurrently.
+- **Reading/writing files:** Especially when dealing with multiple files or network file systems.
+- **Network communication:** Chat servers, network clients, or any application that sends and receives data over a network.
+- **Database interactions:** Querying a database, retrieving results, and so on.
+- **Waiting for user input:** In a GUI application, waiting for the user to type something or click a button.
+
+**2. CPU-Bound Problems:**
+
+- **Use `multiprocessing`:** This is the correct choice for tasks that are computationally intensive and spend most of their time doing calculations. `multiprocessing` bypasses the GIL by creating separate processes, allowing true parallelism on multi-core machines.
+
+**Example of CPU-bound tasks:**
+
+- **Mathematical computations:** Complex calculations, simulations, or number crunching.
+- **Image/video processing:** Encoding, decoding, or manipulating images or videos.
+- **Scientific computing:** Running simulations, analyzing data, or performing statistical calculations.
+- **Cryptography:** Encrypting or decrypting data.
+- **Parsing large files:** If the parsing itself is computationally intensive (not just reading the file).
+
+**3. Else (Synchronous or Asynchronous for Responsiveness):**
+
+- **You are probably fine with synchronous code:** If your code is neither heavily I/O-bound nor CPU-bound, and it's relatively simple, then synchronous code is often the easiest and most straightforward approach.
+- **You may still want to use async for responsiveness:** Even if your code isn't strictly I/O-bound, you might still consider using `asyncio` if you want to maintain a responsive user interface. For example, if your code performs some long-running task (even if it's not purely I/O), using `asyncio` can prevent the GUI from freezing.
+
+**Example:**
+
+Imagine a desktop application that lets the user search for files on their computer. The actual file searching might involve some I/O (reading directory listings), but it could also involve some CPU work (comparing filenames). Even if it's not _heavily_ I/O or CPU-bound, you could use `asyncio` to ensure that the GUI remains responsive while the search is in progress. The user could still interact with other parts of the application or even cancel the search.
+
+**In summary:** The guidelines you provided are a good starting point. The key is to understand the nature of your tasks:
+
+- **Where does your program spend most of its time?** Waiting for I/O or doing computations?
+- **Are the libraries you're using compatible with `asyncio`?**
+- **Do you need to maintain a responsive user interface?**
+
+By considering these questions, you can make an informed decision about which approach is best for your specific needs.
