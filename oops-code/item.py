@@ -25,7 +25,7 @@ class Item:
 
         # assign to self object
         self.__name: str = name
-        self.price: float = price
+        self.__price: float = price
         self.quantity: int = quantity
 
         # add to all items
@@ -36,6 +36,10 @@ class Item:
     def name(self) -> str:
         return self.__name
 
+    @property
+    def price(self) -> float:
+        return self.__price
+
     @name.setter
     def name(self, value: str) -> None:
         # length b/w 1 and 10
@@ -44,6 +48,24 @@ class Item:
         else:
             raise Exception("Name should be 1-10 characters!")
 
+    def apply_increment(self, increment: float) -> None:
+        """apply increment to price
+
+        price = price + price * increment
+
+        Args:
+        increment (float): increment value
+        range: 0.0 to 1.0
+
+        Returns:
+        None
+        """
+        if 0.0 < increment < 1:
+            self.__price = self.__price + self.__price * increment
+        else:
+            raise Exception("Increment should be between 0 and 1")
+
+    # encapsulation
     def calulate_total_price(self) -> float:
         """total price of item
 
@@ -52,17 +74,16 @@ class Item:
         Returns:
             int: total price of item
         """
-        total_price: float = self.price * self.quantity
+        total_price: float = self.__price * self.quantity
         return total_price
 
-    def apply_discount(self) -> float:
+    def apply_discount(self) -> None:
         """apply discount to price
 
         Returns:
             float: discounted price
         """
-        self.price = self.price * self.pay_rate
-        return self.price
+        self.__price = self.__price * self.pay_rate
 
     @classmethod
     def instantiate_from_csv(cls):
@@ -96,6 +117,30 @@ class Item:
             return True
         else:
             return False
+
+    # abstraction
+    def __connect(self, smtp_server: str) -> None:
+        print(f"connected to {smtp_server}")
+        pass
+
+    def __prepare_body(self) -> str:
+        return f"""
+        Hello
+
+        We have {self.quantity} {self.name} in stock.
+
+        Regards,
+        Alok Shandilya
+        """
+
+    def __send(self):
+        pass
+
+    def send_email(self):
+        self.__connect("smtp.gmail.com")
+        self.__prepare_body()
+        self.__send()
+        print("email sent successfully")
 
     def __repr__(self) -> str:
         return f"Item('{self.name}', {self.price}, {self.quantity})"
