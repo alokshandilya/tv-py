@@ -242,3 +242,106 @@ Create database-specific components (e.g., connections, queries) for different d
 4. **Avoid Overusing the Pattern:** For simple cases, direct instantiation may be sufficient.
 
 > is particularly useful when you need to ensure compatibility between objects and support multiple variations of a product family.
+
+# Factory vs Abstract Factory design pattern
+
+The **Factory Method** and **Abstract Factory** design patterns are both creational patterns used to manage object creation, but they differ in their level of abstraction and the scope of objects they create. Below is a detailed comparison between the two:
+
+### 1. Factory Method Design Pattern
+
+#### Definition:
+
+The Factory Method pattern defines an interface for creating an object but lets subclasses decide which class to instantiate. It delegates the instantiation logic to subclasses.
+
+#### Key Characteristics:
+
+- **Single Product Creation:** The Factory Method is focused on creating a single type of product (object).
+- **Subclass Responsibility:** Subclasses implement the factory method to create specific instances.
+- **Loose Coupling:** Encapsulates object creation logic, promoting loose coupling between the creator and the concrete products.
+
+#### Structure:
+
+```plaintext
+    +-------------------+
+    |   Creator         |
+    +-------------------+
+    | + factoryMethod() |  <-- Abstract method or default implementation
+    +-------------------+
+            ^
+            |
+    +-------+-----------+
+    | ConcreteCreator   |
+    +-------------------+
+    | + factoryMethod() |  <-- Implements/overrides factoryMethod()
+    +-------------------+
+```
+
+#### Example Use Case:
+
+Suppose you have a `Document` class that needs to create different types of pages (`HtmlPage`, `PdfPage`). The `Document` class defines a `createPage()` method (factory method), and subclasses like `HtmlDocument` and `PdfDocument` implement this method to return the appropriate page type.
+
+### 2. Abstract Factory Design Pattern
+
+#### Definition:
+
+The Abstract Factory pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes.
+
+#### Key Characteristics:
+
+- **Family of Products:** Abstract Factory focuses on creating a family of related objects (e.g., UI components for different operating systems).
+- **Encapsulation of Multiple Factories:** It groups multiple factory methods under a single abstract factory interface.
+- **Higher Abstraction:** Abstract Factory operates at a higher level of abstraction compared to Factory Method.
+
+#### Structure:
+
+```plaintext
+    +--------------------+
+    |  AbstractFactory   |
+    +--------------------+
+    | + createProductA() |
+    | + createProductB() |
+    +--------------------+
+            ^
+            |
+    +-------+------------+
+    |  ConcreteFactory   |
+    +--------------------+
+    | + createProductA() |
+    | + createProductB() |
+    +--------------------+
+```
+
+#### Example Use Case:
+
+Suppose you are building a cross-platform GUI library. You need to create buttons, textboxes, and menus for Windows, macOS, and Linux. An `AbstractFactory` defines methods like `createButton()`, `createTextbox()`, and `createMenu()`. Concrete factories like `WindowsFactory`, `MacOSFactory`, and `LinuxFactory` implement these methods to produce platform-specific UI components.
+
+### Key Differences
+
+| **Aspect**               | **Factory Method**                                    | **Abstract Factory**                                     |
+| ------------------------ | ----------------------------------------------------- | -------------------------------------------------------- |
+| **Purpose**              | Creates a single product.                             | Creates a family of related or dependent products.       |
+| **Level of Abstraction** | Operates at a lower level of abstraction.             | Operates at a higher level of abstraction.               |
+| **Scope**                | Focuses on one product at a time.                     | Focuses on multiple products that belong to a family.    |
+| **Implementation**       | Uses inheritance and subclasses to create objects.    | Uses composition and multiple factory methods.           |
+| **Flexibility**          | Suitable for simpler use cases with fewer variations. | Suitable for complex scenarios with multiple families.   |
+| **Example**              | Creating a single type of document (e.g., PDF, HTML). | Creating a complete set of UI components for a platform. |
+
+### When to Use Which?
+
+- **Use Factory Method When:**
+
+  - You need to create a single type of product.
+  - The creation logic can vary across subclasses.
+  - You want to decouple the client code from the concrete product classes.
+
+- **Use Abstract Factory When:**
+  - You need to create families of related or dependent objects.
+  - The system must be independent of how its products are created, composed, and represented.
+  - You want to ensure that the created objects are compatible with each other.
+
+### Summary
+
+- **Factory Method** is simpler and focuses on creating a single product using inheritance.
+- **Abstract Factory** is more complex and focuses on creating families of related products using composition.
+
+Both patterns promote flexibility and scalability in object creation, but the choice depends on the complexity and requirements of your application.
