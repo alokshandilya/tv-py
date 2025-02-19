@@ -652,3 +652,134 @@ print(result)  # Output: 8
 | **Public Methods**       | Methods accessible from outside the class.                                 | Default behavior for methods.                                   |
 | **Class Methods**        | Methods bound to the class, not instances, defined with `@classmethod`.    | Factory methods or class-level operations.                      |
 | **Static Methods**       | Methods independent of instances or classes, defined with `@staticmethod`. | Utility functions related to the class.                         |
+
+## OOPS concepts in Python
+
+### 1. Encapsulation
+
+Encapsulation is the bundling of data (attributes) and methods (functions) that operate on the data into a single unit (class). It also restricts direct access to some components using access modifiers like private (`__`) or protected (`_`).
+
+#### Example in Python
+
+```python
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # Private attribute
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+
+    def get_balance(self):  # Public method to access private data
+        return self.__balance
+
+
+account = BankAccount(1000)
+account.deposit(500)
+account.withdraw(200)
+print(account.get_balance())  # Output: 1300
+# print(account.__balance)  # Error: Cannot access private attribute directly
+```
+
+- **Key Point:** The `__balance` attribute is encapsulated and can only be accessed or modified through public methods (`deposit`, `withdraw`, `get_balance`).
+
+### 2. Abstraction
+
+Abstraction hides complex implementation details and exposes only the essential features of an object. It allows you to focus on _what_ an object does rather than _how_ it does it.
+
+#### Example in Python
+
+```python
+from abc import ABC, abstractmethod
+
+class Animal(ABC):  # Abstract class
+    @abstractmethod
+    def make_sound(self):
+        pass  # Abstract method (no implementation)
+
+class Dog(Animal):
+    def make_sound(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def make_sound(self):
+        return "Meow!"
+
+
+dog = Dog()
+cat = Cat()
+
+print(dog.make_sound())  # Output: Woof!
+print(cat.make_sound())  # Output: Meow!
+```
+
+- **Key Point:** The `Animal` class defines an abstract method `make_sound`, which is implemented by its subclasses (`Dog`, `Cat`). The user interacts with the interface without worrying about the implementation.
+
+## 3. Inheritance
+
+Inheritance allows a class (child) to inherit attributes and methods from another class (parent). It promotes code reuse and establishes a hierarchical relationship between classes.
+
+#### Example in Python
+
+```python
+class Vehicle:
+    def __init__(self, brand):
+        self.brand = brand
+
+    def start(self):
+        return f"{self.brand} vehicle started."
+
+class Car(Vehicle):  # Inherits from Vehicle
+    def drive(self):
+        return f"Driving the {self.brand} car."
+
+
+car = Car("Toyota")
+print(car.start())  # Output: Toyota vehicle started.
+print(car.drive())  # Output: Driving the Toyota car.
+```
+
+- **Key Point:** The `Car` class inherits the `start` method from the `Vehicle` class and adds its own `drive` method.
+
+### 4. Polymorphism
+
+Polymorphism allows objects of different classes to be treated as objects of a common superclass. It enables a single interface to represent different types of objects.
+
+#### Example in Python
+
+```python
+class Bird:
+    def fly(self):
+        return "Bird is flying."
+
+class Airplane:
+    def fly(self):
+        return "Airplane is flying."
+
+def let_it_fly(flying_object):
+    print(flying_object.fly())  # Common interface
+
+
+bird = Bird()
+airplane = Airplane()
+
+let_it_fly(bird)       # Output: Bird is flying.
+let_it_fly(airplane)   # Output: Airplane is flying.
+```
+
+- **Key Point:** The `let_it_fly` function works with any object that has a `fly` method, demonstrating polymorphic behavior.
+
+### Summary Table
+
+| **Concept**       | **Definition**                                                             | **Python Example**                                                     |
+| ----------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Encapsulation** | Bundling data and methods, restricting access to internal details.         | Private attribute `__balance` in `BankAccount`.                        |
+| **Abstraction**   | Hiding implementation details, exposing only essential features.           | Abstract class `Animal` with abstract method `make_sound`.             |
+| **Inheritance**   | Reusing attributes and methods from a parent class in child classes.       | `Car` class inheriting from `Vehicle`.                                 |
+| **Polymorphism**  | Treating objects of different classes as instances of a common superclass. | `let_it_fly` function working with both `Bird` and `Airplane` objects. |
+
+These four principles form the foundation of OOP and are widely used in designing robust, maintainable, and scalable software systems.
