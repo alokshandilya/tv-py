@@ -38,12 +38,11 @@ class Item:
 
     @name.setter
     def name(self, value: str) -> None:
-        if len(value) > 10:
-            raise Exception("Name too long!")
-        if len(value) == 0:
-            raise Exception("Name cannot be blank!")
-        else:
+        # length b/w 1 and 10
+        if 1 <= len(value) <= 10:
             self.__name = value
+        else:
+            raise Exception("Name should be 1-10 characters!")
 
     def calulate_total_price(self) -> float:
         """total price of item
