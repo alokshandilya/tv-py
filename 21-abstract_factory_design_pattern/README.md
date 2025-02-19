@@ -329,11 +329,9 @@ Suppose you are building a cross-platform GUI library. You need to create button
 ### When to Use Which?
 
 - **Use Factory Method When:**
-
   - You need to create a single type of product.
   - The creation logic can vary across subclasses.
   - You want to decouple the client code from the concrete product classes.
-
 - **Use Abstract Factory When:**
   - You need to create families of related or dependent objects.
   - The system must be independent of how its products are created, composed, and represented.
