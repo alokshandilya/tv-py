@@ -62,30 +62,6 @@ print(p.y)  # Output: 20
 
 Without `__slots__`, each instance has a `__dict__` that consumes additional memory. With `__slots__`, Python uses a compact internal structure to store attributes, reducing memory usage significantly, especially for classes with many small objects.
 
-#### Example: Memory Usage Comparison
-
-```python
-import sys
-
-class WithoutSlots:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-class WithSlots:
-    __slots__ = ('x', 'y')
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-obj1 = WithoutSlots(10, 20)
-obj2 = WithSlots(10, 20)
-
-print(sys.getsizeof(obj1))  # Larger size due to __dict__
-print(sys.getsizeof(obj2))  # Smaller size due to __slots__
-```
-
 ## 3. Benefits of Using `__slots__`
 
 ### a. Reduced Memory Usage
