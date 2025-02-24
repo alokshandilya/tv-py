@@ -783,3 +783,307 @@ let_it_fly(airplane)   # Output: Airplane is flying.
 | **Polymorphism**  | Treating objects of different classes as instances of a common superclass. | `let_it_fly` function working with both `Bird` and `Airplane` objects. |
 
 These four principles form the foundation of OOP and are widely used in designing robust, maintainable, and scalable software systems.
+
+## Runtime, Compile time, Method overloading, Method overriding in polymorphism in Python :star2:
+
+### Compile Time vs Runtime
+
+- **Compile Time**: This refers to the phase when the code is being translated into machine code or an intermediate representation (like bytecode in Python). In languages like C++ or Java, a lot of type-checking and method resolution happens at compile time.
+
+  However, **Python is an interpreted language**, meaning there is no separate compilation step as in compiled languages. Instead, Python compiles source code into bytecode on-the-fly, which is then executed by the Python interpreter. So, Python doesn't have a strict "compile time" phase like compiled languages.
+
+- **Runtime**: This is the phase when the program is actually running and executing instructions. In Python, many decisions, such as method resolution and dynamic typing, happen at runtime. This allows for more flexibility but also means that some errors (e.g., type errors) are only caught during execution.
+
+### Method Overloading
+
+**Method overloading** occurs when two or more methods in the same class have the same name but different parameters (either in terms of number of arguments or their types). The correct method to execute is determined at **compile time** based on the arguments passed.
+
+#### Method Overloading in Python:
+
+Python does not support method overloading in the traditional sense (as seen in languages like Java or C++). If you define multiple methods with the same name in a class, the last one defined will override the previous ones.
+
+However, you can simulate method overloading using default arguments or variable-length arguments (`*args` or `**kwargs`).
+
+```python
+class Example:
+    def add(self, a=None, b=None, c=None):
+        if a is not None and b is not None and c is not None:
+            return a + b + c
+        elif a is not None and b is not None:
+            return a + b
+        else:
+            return a
+
+example = Example()
+print(example.add(1))          # Output: 1
+print(example.add(1, 2))       # Output: 3
+print(example.add(1, 2, 3))    # Output: 6
+```
+
+> #### 1. Using Default Arguments
+>
+> One of the simplest ways to simulate method overloading in Python is by using **default arguments**. You can define a single method with default values for some parameters, allowing the method to handle different numbers of arguments.
+>
+> ```python
+> class Example:
+>     def add(self, a=None, b=None, c=None):
+>         if a is not None and b is not None and c is not None:
+>             return a + b + c
+>         elif a is not None and b is not None:
+>             return a + b
+>         elif a is not None:
+>             return a
+>         else:
+>             return 0
+>
+> example = Example()
+> print(example.add(1))          # Output: 1
+> print(example.add(1, 2))       # Output: 3
+> print(example.add(1, 2, 3))    # Output: 6
+> ```
+>
+> - **Pros**: Simple and easy to implement.
+> - **Cons**: Can become cumbersome if you have many possible combinations of arguments.
+>
+> ### 2. Using Variable-Length Arguments (`*args`)
+>
+> Another approach is to use **variable-length arguments** (`*args`). This allows you to pass any number of arguments to the method, and then handle them inside the function.
+>
+> ```python
+> class Example:
+>     def add(self, *args):
+>         total = 0
+>         for num in args:
+>             total += num
+>         return total
+>
+> example = Example()
+> print(example.add(1))          # Output: 1
+> print(example.add(1, 2))       # Output: 3
+> print(example.add(1, 2, 3))    # Output: 6
+> ```
+>
+> - **Pros**: Flexible and works well when the number of arguments is unknown or varies.
+> - **Cons**: Less explicit about the expected arguments, which can make the code harder to understand.
+>
+> ### 3. Using Keyword Arguments (`**kwargs`)
+>
+> You can also use **keyword arguments** (`**kwargs`) to simulate method overloading. This allows you to pass named arguments, which can be handled differently based on their names.
+>
+> ```python
+> class Example:
+>     def greet(self, **kwargs):
+>         if 'name' in kwargs and 'age' in kwargs:
+>             return f"Hello {kwargs['name']}, you are {kwargs['age']} years old!"
+>         elif 'name' in kwargs:
+>             return f"Hello {kwargs['name']}!"
+>         else:
+>             return "Hello!"
+>
+> example = Example()
+> print(example.greet(name="Alice"))                      # Output: Hello Alice!
+> print(example.greet(name="Bob", age=30))               # Output: Hello Bob, you are 30 years old!
+> print(example.greet())                                  # Output: Hello!
+> ```
+>
+> - **Pros**: Very flexible and allows for named arguments, making the code more readable.
+> - **Cons**: Similar to `*args`, it can become less explicit and harder to manage if overused.
+>
+> ### 4. Using `@singledispatch` (Single Dispatch Generic Functions) :star2:
+>
+> Python provides a built-in decorator called `@singledispatch` from the `functools` module, which allows you to define a generic function that behaves differently depending on the type of the first argument. This is a more advanced technique and is useful when you want to overload methods based on the **type** of the arguments.
+>
+> ```python
+> from functools import singledispatch
+>
+> class Example:
+>     @singledispatch
+>     def add(self, arg):
+>         raise NotImplementedError("Unsupported type")
+>
+>     @add.register(int)
+>     def _(self, arg):
+>         return arg
+>
+>     @add.register(list)
+>     def _(self, arg):
+>         return sum(arg)
+>
+>     @add.register(str)
+>     def _(self, arg):
+>         return arg.upper()
+>
+> example = Example()
+> print(example.add(10))                # Output: 10
+> print(example.add([1, 2, 3]))         # Output: 6
+> print(example.add("hello"))           # Output: HELLO
+> ```
+>
+> - **Pros**: Clean and elegant, especially when dealing with different types of arguments.
+> - **Cons**: Only dispatches based on the type of the first argument, so it's limited in that sense.
+>
+> ### 5. Using Multiple Dispatch Libraries (e.g., `multipledispatch`) :star2: :star2:
+>
+> If you need more advanced method overloading that depends on multiple arguments, you can use external libraries like [`multipledispatch`](https://pypi.org/project/multipledispatch/). This library allows you to define multiple versions of a function that behave differently based on the types of all arguments.
+>
+> First, install the library:
+>
+> ```bash
+> pip install multipledispatch
+> ```
+>
+> Then, you can use it as follows:
+>
+> ```python
+> from multipledispatch import dispatch
+>
+> class Example:
+>     @dispatch(int, int)
+>     def add(self, a, b):
+>         return a + b
+>
+>     @dispatch(int, int, int)
+>     def add(self, a, b, c):
+>         return a + b + c
+>
+>     @dispatch(str, str)
+>     def add(self, a, b):
+>         return a + " " + b
+>
+> example = Example()
+> print(example.add(1, 2))              # Output: 3
+> print(example.add(1, 2, 3))          # Output: 6
+> print(example.add("Hello", "World")) # Output: Hello World
+> ```
+>
+> - **Pros**: Allows method overloading based on the types of multiple arguments.
+> - **Cons**: Requires an external library, which may not be desirable in all projects.
+>
+> ### 6. Using Type Checking with `isinstance()`
+>
+> Another way to simulate method overloading is by manually checking the types of the arguments using `isinstance()` and handling each case accordingly.
+>
+> ```python
+> class Example:
+>     def add(self, a, b=None):
+>         if isinstance(a, int) and isinstance(b, int):
+>             return a + b
+>         elif isinstance(a, str) and isinstance(b, str):
+>             return a + " " + b
+>         elif b is None:
+>             return a
+>         else:
+>             raise TypeError("Unsupported types")
+>
+> example = Example()
+> print(example.add(1, 2))              # Output: 3
+> print(example.add("Hello", "World"))  # Output: Hello World
+> print(example.add(10))                # Output: 10
+> ```
+>
+> - **Pros**: Explicitly handles different types of arguments.
+> - **Cons**: Can become verbose and hard to maintain if there are many cases.
+>
+> ### Conclusion: Best Way to Simulate Method Overloading in Python
+>
+> The **best way** to simulate method overloading in Python depends on your specific use case:
+>
+> 1. **Simple Cases**: Use **default arguments** or **variable-length arguments** (`*args`, `**kwargs`) for simple scenarios where the number of arguments varies.
+> 2. **Type-Based Overloading**: Use **`@singledispatch`** or **`multipledispatch`** when you want to overload methods based on the **type** of arguments.
+> 3. **Advanced Scenarios**: For more complex cases where you need to handle multiple types of arguments, consider using **`multipledispatch`** or manual type checking with `isinstance()`.
+>
+> #### Recommendation:
+>
+> For most use cases, **default arguments** or **variable-length arguments** (`*args`, `**kwargs`) are sufficient and easy to implement. If you need type-based overloading, `@singledispatch` is a clean and Pythonic solution.
+
+### 3. Method Overriding
+
+**Method overriding** occurs when a subclass provides a specific implementation of a method that is already defined in its superclass. The overridden method in the subclass has the same name, return type, and parameters as the method in the parent class. The decision about which method to call is made at **runtime**, based on the object's actual class.
+
+#### Method Overriding in Python:
+
+```python
+class Animal:
+    def speak(self):
+        return "Animal speaks"
+
+class Dog(Animal):
+    def speak(self):
+        return "Dog barks"
+
+class Cat(Animal):
+    def speak(self):
+        return "Cat meows"
+
+# Polymorphism in action
+animals = [Dog(), Cat(), Animal()]
+
+for animal in animals:
+    print(animal.speak())
+
+# Output:
+# Dog barks
+# Cat meows
+# Animal speaks
+```
+
+In this example:
+
+- The `speak` method is overridden in the `Dog` and `Cat` classes.
+- At **runtime**, the correct `speak` method is called based on the actual object type (`Dog`, `Cat`, or `Animal`), demonstrating **runtime polymorphism**.
+
+### 4. **Polymorphism in Python**
+
+Polymorphism allows objects of different classes to be treated as objects of a common superclass. It enables a single interface to represent different underlying forms (data types).
+
+There are two main types of polymorphism:
+
+- **Compile-time polymorphism** (Method overloading): Not natively supported in Python, but can be simulated using default arguments or `*args`/`**kwargs`.
+- **Runtime polymorphism** (Method overriding): Achieved through inheritance and method overriding.
+
+#### Example of Polymorphism with Method Overriding:
+
+```python
+class Shape:
+    def area(self):
+        pass  # Abstract method
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14 * self.radius ** 2
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+shapes = [Circle(5), Rectangle(4, 6)]
+
+for shape in shapes:
+    print(f"Area: {shape.area()}")
+
+# Output:
+# Area: 78.5
+# Area: 24
+```
+
+In this example:
+
+- The `area` method is overridden in both `Circle` and `Rectangle` classes.
+- At **runtime**, the correct `area` method is called based on the actual object type (`Circle` or `Rectangle`), demonstrating polymorphism.
+
+### Summary
+
+- **Compile Time**: Python doesn't have a strict compile-time phase, but it compiles source code into bytecode before execution.
+- **Runtime**: Many decisions, such as method resolution and dynamic typing, occur at runtime in Python.
+- **Method Overloading**: Not directly supported in Python, but can be simulated using default arguments or `*args`/`**kwargs`.
+- **Method Overriding**: Supported in Python via inheritance. The correct method is resolved at runtime based on the object's actual class.
+- **Polymorphism**: Achieved through method overriding, allowing objects of different classes to be treated uniformly through a common interface.
+
+By leveraging these concepts, you can write flexible and reusable code in Python.
