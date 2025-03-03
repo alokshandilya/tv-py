@@ -13,19 +13,21 @@ Here's a detailed explanation with Python implementation:
 
 ```python
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
+
 
 # Abstract Observer
 class Observer(ABC):
     @abstractmethod
-    def update(self, message: str) -> None:
+    def update(self, message: Optional[str]) -> None:
         pass
+
 
 # Concrete Subject
 class Subject:
     def __init__(self):
         self._observers: List[Observer] = []
-        self._state = None
+        self._state: Optional[str] = None
 
     def attach(self, observer: Observer) -> None:
         if observer not in self._observers:
@@ -50,13 +52,15 @@ class Subject:
         self._state = state
         self.notify()
 
+
 # Concrete Observers
 class ConcreteObserverA(Observer):
-    def update(self, message: str) -> None:
+    def update(self, message: Optional[str]) -> None:
         print(f"Observer A received: {message}")
 
+
 class ConcreteObserverB(Observer):
-    def update(self, message: str) -> None:
+    def update(self, message: Optional[str]) -> None:
         print(f"Observer B received: {message}")
 ```
 
